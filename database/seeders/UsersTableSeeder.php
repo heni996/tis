@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Hotel;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -32,6 +34,7 @@ class UsersTableSeeder extends Seeder
 
         foreach ($rolesMap as $roleType => $role) {
             for ($i = 0; $i < 3; $i++) {
+                $role = Role::where('name', $role)->first();
                 $email = "{$roleType}{$i}@tis.tn";
                 $user= User::create([
                     'id' => Str::uuid(),
@@ -42,6 +45,11 @@ class UsersTableSeeder extends Seeder
                 ]);
                 if ($user) {
                     $user->assignRole($role);
+                    if ($roleType === 'hotelmanager' || $roleType === 'hotelreceptionist' || $roleType === 'android') {
+                        $hotel = Hotel::inRandomOrder()->first(); // Get a random hotel
+                        $user->hotel_id = $hotel->id;
+                        $user->save();
+                    }
                 }
             }
         }

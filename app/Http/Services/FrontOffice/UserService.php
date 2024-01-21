@@ -2,10 +2,7 @@
 
 namespace App\Http\Services\FrontOffice;
 
-use App\Http\Resources\BackOffice\UserResource;
-use App\ModelFilters\UserFilter;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\AuthenticationException;
@@ -27,9 +24,10 @@ class UserService
 
     public function editUser(User $user, array $data)
     {
-
-        if (!$user->hasRole($data['role'])) {
-            $this->changeRole($user, $data);
+        if(isset($data['role'])){
+            if (!$user->hasRole($data['role'])) {
+                $this->changeRole($user,$this->UpdateUserData($data, $user));
+            }
         }
 
         if (array_key_exists('password', $data)) {
@@ -53,11 +51,11 @@ class UserService
         }
     }
 
-    public function getUserById(int $id, User $userModel)
+    public function getUserById(string $id, User $userModel)
     {
-        $user = $userModel::where('id', $id)->with($this->withModels())->first();
+        $user = $userModel::where('id', $id)->first();
         if ($user) {
-            return new UserResource($user);
+            return $user;
         }
     }
 
@@ -100,13 +98,6 @@ class UserService
         }
     }
 
-    public function removeRegion(User $user, array $areas)
-    {
-        if ($user->isAdmin()) {
-            $user->areas()->detach($areas);
-        }
-    }
-
     public function userData($data): array
     {
         return [
@@ -116,7 +107,19 @@ class UserService
             'last_name'=>$data['last_name'],
             'hotel_id'=>$data['hotel_id'],
             'password' => Hash::make($data['password']),
-            'role' => isset($data["role"])??null
+            'role' => isset($data["role"]) ? $data["role"] : null
+        ];
+    }
+
+    public function UpdateUserData($data, User $user): array
+    {
+        return [
+            'email'=>array_key_exists('email', $data) ? $data['email'] : $user->email,
+            'password'=>array_key_exists('password', $data) ? $data['password'] : $user->password,
+            'first_name'=>array_key_exists('first_name', $data) ? $data['first_name'] : $user->first_name,
+            'last_name'=>array_key_exists('last_name', $data) ? $data['last_name'] : $user->last_name,
+            'hotel_id'=> array_key_exists('hotel_id', $data) ? $data['hotel_id'] : $user->hotel_id,
+            'role' => isset($data["role"]) ? $data["role"] : null
         ];
     }
 
@@ -140,35 +143,41 @@ class UserService
     public function resourcesOfEachUser()
     {
         return [
-            'dispatcheur' => [
-                'demandes' => ['view', 'follow', 'delete'],
-                'specialities' => ['view'],
-                'announces' => ['view'],
-                'domaines' => ['view'],
-                'promos' => ['view'],
-                'adresses' => ['view'],
+            'ROLE_SUPER_ADMIN' => [
+                'users' => ['create', 'view',  'edit', 'delete'],
+                'questions' => ['create', 'view',  'edit', 'delete'],
+                'guestbooks' => ['create', 'view',  'edit', 'delete'],
+                'hotels' => ['create', 'view',  'edit', 'delete'],
+                'responses' => ['create', 'view',  'edit', 'delete'],
+                // 'tourists' => ['create', 'view',  'edit', 'delete'],
             ],
-            'commerciale' => [
-                'demandes' => ['view'],
-                'domaines' => ['view'],
-                'specialities' => ['view'],
-                'announces' => ['create', 'view',  'edit', 'delete'],
-                'promos' => ['create', 'view',  'edit', 'delete'],
-                'adresses' => ['view'],
+            'ROLE_ADMIN' => [
+                'users' => ['create', 'view',  'edit', 'delete'],
+                'questions' => ['create', 'view',  'edit', 'delete'],
+                'guestbooks' => ['create', 'view',  'edit', 'delete'],
+                'hotels' => ['create', 'view',  'edit', 'delete'],
+                'responses' => ['create', 'view',  'edit', 'delete'],
+                // 'tourists' => ['create', 'view',  'edit', 'delete'],
             ],
-            'prestataire' => [
-                'demandes' => ['view'],
+            'ROLE_HOTEL_MANAGER' => [
+                'hotels' => ['create', 'view',  'edit', 'delete'],
+                // 'tourists' => ['create', 'view',  'edit', 'delete'],
+                'users' => ['create', 'view',  'edit'],
             ],
-            'client' => [
-                'demandes' => ['create', 'view', 'follow', 'delete'],
+            'ROLE_HOTEL_RECEPTIONIST' => [
+                'hotels' => ['create', 'view',  'edit', 'delete'],
+                'tourists' => ['create', 'view',  'edit', 'delete'],
+            ],
+            'ROLE_HOTEL_ANDROID' => [
+                'hotels' => ['view'],
             ],
         ];
     }
 
-    public function withModels()
-    {
-        return ['roles'];
-    }
+    // public function withModels()
+    // {
+    //     return ['roles'];
+    // }
 
     public function setUserAuth(int $active_status, User $User): User
     {
@@ -188,41 +197,38 @@ class UserService
     }
     public function usersRolesHierarchy($user)
     {
-        if ($user->hasRole('superadmin')) {
+        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
             return [
-                'superadmin',
-                'admin',
-                'operateur',
-                'dispatcheur',
-                'prestataire',
-                'commerciale',
-                'client',
+                'ROLE_SUPER_ADMIN',
+                'ROLE_ADMIN',
+                'ROLE_HOTEL_MANAGER',
+                'ROLE_HOTEL_RECEPTIONIST',
+                'ROLE_HOTEL_ANDROID',
             ];
         }
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('ROLE_ADMIN')) {
             return [
-                'admin',
-                'operateur',
-                'dispatcheur',
-                'prestataire',
-                'commerciale',
-                'client'
+                'ROLE_ADMIN',
+                'ROLE_HOTEL_MANAGER',
+                'ROLE_HOTEL_RECEPTIONIST',
+                'ROLE_HOTEL_ANDROID',
             ];
         }
 
-        if ($user->hasRole('operateur') || $user->hasRole('dispatcheur') || $user->hasRole('commerciale') || $user->hasRole('prestataire')) {
+        if ($user->hasRole('ROLE_HOTEL_MANAGER')) {
             return [
-                'prestataire',
-                'client'
+                'ROLE_HOTEL_MANAGER',
+                'ROLE_HOTEL_RECEPTIONIST',
+                'ROLE_HOTEL_ANDROID',
             ];
         }
-        if ($user->hasRole('client')) {
+        if ($user->hasRole('ROLE_HOTEL_RECEPTIONIST')) {
             return [
-                'prestataire',
+                'ROLE_HOTEL_RECEPTIONIST',
             ];
         }
         return [
-            'client'
+            'ROLE_HOTEL_ANDROID'
         ];
     }
 

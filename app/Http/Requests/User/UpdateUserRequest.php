@@ -22,11 +22,10 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'hotel_id' => 'required|exists:hotels,id',
+            'email' => 'nullable|email|unique:users,email',
+            'first_name' => 'nullable|string',
+            'last_name' => 'nullable|string',
+            // 'hotel_id' => 'nullable|exists:hotels,id',
             // Add other rules as needed
         ];
     }

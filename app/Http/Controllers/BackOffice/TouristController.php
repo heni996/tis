@@ -19,9 +19,6 @@ class TouristController extends Controller
 
     public function __construct(TouristService $TouristService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->TouristService = $TouristService;
         $this->TouristModel = new Tourist();
     }

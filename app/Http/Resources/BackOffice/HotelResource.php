@@ -16,14 +16,7 @@ class HotelResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->email,
-            'roles' => $this->roles,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'hotel' => new HotelResource($this->whenLoaded('hotel')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            // Add other fields or relationships as needed
+            'name' => $this->name,
         ];
     }
 }

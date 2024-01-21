@@ -8,6 +8,7 @@ use App\Http\Requests\Tourist\UpdateTouristRequest;
 use App\Http\Resources\FrontOffice\TouristResource;
 use App\Http\Services\FrontOffice\TouristService;
 use App\Models\Tourist;
+use App\Models\Trainer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,9 +20,6 @@ class TouristController extends Controller
 
     public function __construct(TouristService $TouristService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->TouristService = $TouristService;
         $this->TouristModel = new Tourist();
     }
@@ -52,12 +50,15 @@ class TouristController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $TouristData = $request->validated();
-        $filePath = uploadFile($request, 'Tourist_files', 'file');
-        if ($filePath) {
-            $TouristData['file'] = $filePath;
-        }
+        // $filePath = uploadFile($request, 'Tourist_files', 'file');
+        // if ($filePath) {
+        //     $TouristData['file'] = $filePath;
+        // }
+        $TouristData['code'] = $this->generateUniqueCode();
+        $TouristData['is_valid'] = false;
         $Tourist = $this->TouristService
             ->createTourist($TouristData, $this->TouristModel);
+        $Tourist->hotels()->attach($TouristData['hotel_ids']);
         return response()->json([
             'message' => "Tourist a été créé avec succès.",
             'data' => new TouristResource($Tourist)
@@ -97,10 +98,10 @@ class TouristController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $TouristData = $request->validated();
-        $filePath = uploadFile($request, 'Tourist_files', 'file');
-        if ($filePath) {
-            $TouristData['file'] = $filePath;
-        }
+        // $filePath = uploadFile($request, 'Tourist_files', 'file');
+        // if ($filePath) {
+        //     $TouristData['file'] = $filePath;
+        // }
         $Tourist = $this->TouristService
             ->getTouristById($id, $this->TouristModel);
 
@@ -138,6 +139,50 @@ class TouristController extends Controller
         $this->TouristService->deleteTourist($Tourist);
 
         return response()->json(['message' => "Tourist a été supprimé avec succée."], 202);
+    }
+
+    public function validateCode(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string|size:6',
+        ]);
+
+        $code = strtoupper($request->input('code'));
+
+        $tourist = Tourist::where('code', $code)->first();
+
+        if (!$tourist) {
+            return response()->json(['error' => 'Invalid code'], 404);
+        }
+
+        if ($tourist->is_valid) {
+            throw new \Exception('Code is already valid.');
+        }
+
+        $tourist->update(['is_valid' => true]);
+
+        return response()->json(['message' => 'Code validated successfully']);
+    }
+
+    public function generateUniqueCode()
+    {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersNumber = strlen($characters);
+        $codeLength = 6;
+
+        $code = '';
+
+        while (strlen($code) < $codeLength) {
+            $position = rand(0, $charactersNumber - 1);
+            $character = $characters[$position];
+            $code = $code . $character;
+        }
+
+        if (Trainer::where('code', $code)->exists()) {
+            return $this->generateUniqueCode();
+        }
+
+        return $code;
     }
 }
 

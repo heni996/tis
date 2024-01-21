@@ -19,9 +19,6 @@ class UserController extends Controller
 
     public function __construct(UserService $UserService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->UserService = $UserService;
         $this->UserModel = new User();
     }
@@ -88,19 +85,15 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param int $id
+     * @param string $id
      * @return JsonResponse
      */
-    public function update(UpdateUserRequest $request, int $id): JsonResponse
+    public function update(UpdateUserRequest $request, string $id): JsonResponse
     {
         if (!auth()->check()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $UserData = $request->validated();
-        $filePath = uploadFile($request, 'User_files', 'file');
-        if ($filePath) {
-            $UserData['file'] = $filePath;
-        }
         $User = $this->UserService
             ->getUserById($id, $this->UserModel);
 

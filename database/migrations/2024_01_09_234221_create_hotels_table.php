@@ -13,11 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hotels', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
+            $table->uuid('id')->primary();
             $table->string('name');
-            $table->uuid('user_id');
+            $table->foreignUuid('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

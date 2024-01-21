@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('responses', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
+            $table->uuid('id')->primary();
             $table->string('value', 40);
             $table->uuid('question_id');
             $table->uuid('guest_book_id');

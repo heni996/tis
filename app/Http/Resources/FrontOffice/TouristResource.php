@@ -28,8 +28,7 @@ class TouristResource extends JsonResource
             'is_valid' => $this->is_valid,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'hotels' => HotelResource::collection($this->whenLoaded('hotels')),
-            // Add other fields or relationships as needed
+            'hotels' => $this->hotels
         ];
     }
 }

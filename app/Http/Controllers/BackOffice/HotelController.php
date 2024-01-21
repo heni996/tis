@@ -19,9 +19,6 @@ class HotelController extends Controller
 
     public function __construct(HotelService $HotelService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->HotelService = $HotelService;
         $this->HotelModel = new Hotel();
     }

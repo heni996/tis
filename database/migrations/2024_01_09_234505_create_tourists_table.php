@@ -26,15 +26,6 @@ return new class extends Migration
             $table->boolean('is_valid')->nullable();
             $table->timestamps();
         });
-        Schema::create('hotel_tourist', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
-            $table->uuid('hotel_id');
-            $table->uuid('tourist_id');
-            $table->timestamps();
-
-            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('cascade');
-            $table->foreign('tourist_id')->references('id')->on('tourists')->onDelete('cascade');
-        });
     }
 
     /**
@@ -45,3 +36,18 @@ return new class extends Migration
         Schema::dropIfExists('tourists');
     }
 };
+ Schema::create('hotel_tourist', function (Blueprint $table) {
+            $table->foreignUuid('tourist_id')
+                ->nullable()
+                ->references('id')
+                ->on('tourists')
+                ->onDelete('cascade');
+            $table->foreignUuid('hotel_id')
+                ->nullable()
+                ->references('id')
+                ->on('hotels')
+                ->onDelete('cascade');
+            $table->timestamps(); // Add this line to include created_at and updated_at
+            $table->unique(['hotel_id', 'tourist_id']);
+
+        });

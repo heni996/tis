@@ -13,14 +13,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('guest_books', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
+            $table->uuid('id')->primary();
             $table->string('client_first_name');
             $table->string('client_last_name');
             $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
             $table->text('extra_comment')->nullable();
-            $table->uuid('hotel_id')->nullable();
-            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('set null');
+            $table->foreignUuid('hotel_id')
+                ->nullable()
+                ->references('id')
+                ->on('hotels')
+                ->onDelete('set null');
             $table->string('language', 3);
             $table->string('country', 50);
             $table->timestamps();

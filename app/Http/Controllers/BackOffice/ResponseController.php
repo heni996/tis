@@ -19,9 +19,6 @@ class ResponseController extends Controller
 
     public function __construct(ResponseService $ResponseService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->ResponseService = $ResponseService;
         $this->ResponseModel = new Response();
     }

@@ -19,9 +19,6 @@ class HotelController extends Controller
 
     public function __construct(HotelService $HotelService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->HotelService = $HotelService;
         $this->HotelModel = new Hotel();
     }
@@ -52,10 +49,10 @@ class HotelController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $HotelData = $request->validated();
-        $filePath = uploadFile($request, 'Hotel_files', 'file');
-        if ($filePath) {
-            $HotelData['file'] = $filePath;
-        }
+        // $filePath = uploadFile($request, 'Hotel_files', 'file');
+        // if ($filePath) {
+        //     $HotelData['file'] = $filePath;
+        // }
         $Hotel = $this->HotelService
             ->createHotel($HotelData, $this->HotelModel);
         return response()->json([
@@ -97,10 +94,10 @@ class HotelController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $HotelData = $request->validated();
-        $filePath = uploadFile($request, 'Hotel_files', 'file');
-        if ($filePath) {
-            $HotelData['file'] = $filePath;
-        }
+        // $filePath = uploadFile($request, 'Hotel_files', 'file');
+        // if ($filePath) {
+        //     $HotelData['file'] = $filePath;
+        // }
         $Hotel = $this->HotelService
             ->getHotelById($id, $this->HotelModel);
 

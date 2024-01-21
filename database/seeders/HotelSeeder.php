@@ -16,7 +16,9 @@ class HotelSeeder extends Seeder
      */
     public function run()
     {
-        $hotelManagers = User::role('ROLE_HOTEL_MANAGER')->get();
+        $hotelManagers = User::whereHas('roles', function ($query) {
+            $query->where('name', 'ROLE_HOTEL_MANAGER');
+        })->get();
         $hotelReceptionists = User::role('ROLE_HOTEL_RECEPTIONIST')->get();
         $androidUsers = User::role('ROLE_HOTEL_ANDROID')->get();
 
@@ -26,11 +28,16 @@ class HotelSeeder extends Seeder
             $hotel = new Hotel();
             $hotel->id = \Illuminate\Support\Str::uuid(); // Generate UUID for the 'id' field
             $hotel->name = $faker->company;
-            $hotel->user_id = $faker->randomElement($hotelManagers)->id; // Set user_id from a random hotel manager
+            $hotelManager = $faker->randomElement($hotelManagers);
+
+            if ($hotelManager) {
+                $hotel->user_id = $hotelManager->id;
+            }
+
             $hotel->save();
 
-            $hotel->users()->attach($faker->randomElement($hotelReceptionists)); // Change to belongsToMany
-            $hotel->users()->attach($faker->randomElement($androidUsers)); // Change to belongsToMany
+            $hotel->users()->attach($faker->randomElement($hotelReceptionists));
+            $hotel->users()->attach($faker->randomElement($androidUsers));
         }
     }
 }

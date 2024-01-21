@@ -168,6 +168,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         EloquentFilter\ServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,

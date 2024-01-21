@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackOffice\GuestBookController;
 use App\Http\Controllers\BackOffice\HotelController;
 use App\Http\Controllers\BackOffice\QuestionController;
@@ -26,17 +27,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('login', [AuthController::class, 'login'],);
 Route::group([
 
     'middleware' => 'api',
     'prefix' => 'auth'
 
 ], function ($router) {
-
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('me', [AuthController::class,'me']);
     Route::group(['namespace' => 'BackOffice', 'prefix' => 'backoffice'], function ($router) {
         Route::get('/guestbooks', [GuestBookController::class, 'index']);
         Route::get('/guestbooks/{guestbook}', [GuestBookController::class, 'show']);
@@ -95,6 +95,7 @@ Route::group([
         Route::post('/tourists', [FrontOfficeTouristController::class, 'store']);
         Route::put('/tourists/{tourist}', [FrontOfficeTouristController::class, 'update']);
         Route::delete('/tourists/{tourist}', [FrontOfficeTouristController::class, 'destroy']);
+        Route::post('/validate-code', [FrontOfficeTouristController::class, 'validateCode']);
         Route::get('/users', [FrontOfficeUserController::class, 'index']);
         Route::get('/users/{user}', [FrontOfficeUserController::class, 'show']);
         Route::post('/users', [FrontOfficeUserController::class, 'store']);
@@ -102,4 +103,6 @@ Route::group([
         Route::delete('/users/{user}', [FrontOfficeUserController::class, 'destroy']);
     });
 });
+
+
 

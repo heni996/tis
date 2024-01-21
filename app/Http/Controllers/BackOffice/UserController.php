@@ -19,9 +19,6 @@ class UserController extends Controller
 
     public function __construct(UserService $UserService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->UserService = $UserService;
         $this->UserModel = new User();
     }

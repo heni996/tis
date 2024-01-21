@@ -26,7 +26,7 @@ class CreateUserRequest extends FormRequest
             'password' => 'required|min:6',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'hotel_id' => 'required|exists:hotels,id',
+            'hotel_id' => 'nullable|exists:hotels,id',
             // Add other rules as needed
         ];
     }

@@ -20,11 +20,12 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             RoleSeeder::class,
+            HotelSeeder::class,
             UsersTableSeeder::class,
             GuestBookSeeder::class,
-            HotelSeeder::class,
             QuestionSeeder::class,
             ResponseSeeder::class,
+            TouristSeeder::class
         ]);
     }
 }

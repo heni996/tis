@@ -4,6 +4,8 @@ namespace App\Http\Services\FrontOffice;
 
 // use App\Http\Resources\BackOffice\HotelResource;
 // use App\ModelFilters\HotelFilter;
+
+use App\Http\Resources\FrontOffice\HotelResource;
 use App\Models\Hotel;
 
 class HotelService
@@ -36,7 +38,7 @@ class HotelService
     public function getHotels(Hotel $HotelModel, $request)
     {
         // $records = getRecords($HotelModel, $request->all(), HotelResource::class, [], [], false, HotelFilter::class);
-        return $HotelModel::all();
+        return HotelResource::collection($HotelModel::all());
     }
 
 

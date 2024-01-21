@@ -18,7 +18,7 @@ class GuestBookSeeder extends Seeder
     {
         $hotels = Hotel::all();
         $faker = FakerFactory::create('fr_FR');
-
+        
         foreach ($hotels as $hotel) {
             $nbEntries = mt_rand(10, 30);
             for ($i = 0; $i < $nbEntries; $i++) {

@@ -19,9 +19,6 @@ class GuestBookController extends Controller
 
     public function __construct(GuestBookService $GuestBookService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->GuestBookService = $GuestBookService;
         $this->GuestBookModel = new GuestBook();
     }

@@ -24,12 +24,11 @@ class TouristResource extends JsonResource
             'email' => $this->email,
             'arrival_date' => $this->arrival_date,
             'departure_date' => $this->departure_date,
-            'code' => $this->code,
-            'is_valid' => $this->is_valid,
+            // 'code' => $this->code,
+            // 'is_valid' => $this->is_valid,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'hotels' => HotelResource::collection($this->whenLoaded('hotels')),
-            // Add other fields or relationships as needed
         ];
     }
 }

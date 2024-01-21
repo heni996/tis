@@ -19,9 +19,6 @@ class QuestionController extends Controller
 
     public function __construct(QuestionService $QuestionService)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         $this->QuestionService = $QuestionService;
         $this->QuestionModel = new Question();
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Services\FrontOffice;
 
 use App\Http\Resources\BackOffice\TouristResource;
+use App\Http\Resources\FrontOffice\TouristResource as FrontOfficeTouristResource;
 use App\ModelFilters\TouristFilter;
 use App\Models\Tourist;
 
@@ -35,7 +36,7 @@ class TouristService
 
     public function getTourists(Tourist $TouristModel, $request)
     {
-        return $TouristModel::all();
+        return FrontOfficeTouristResource::collection($TouristModel::all());
     }
 
 
@@ -50,6 +51,7 @@ class TouristService
             'email'=>$data['email'],
             'arrival_date'=>$data['arrival_date'],
             'departure_date'=>$data['departure_date'],
+            'hotel_ids' => array_key_exists('hotel_ids', $data) ? $data['hotel_ids'] : [],
             'code'=>$data['code'],
             'is_valid'=>$data['is_valid'],
         ];
@@ -65,6 +67,7 @@ class TouristService
             'email' => array_key_exists('email', $data) ? $data['email'] : $Tourist->email,
             'arrival_date' => array_key_exists('arrival_date', $data) ? $data['arrival_date'] : $Tourist->arrival_date,
             'departure_date' => array_key_exists('departure_date', $data) ? $data['departure_date'] : $Tourist->departure_date,
+            'hotel_ids' => array_key_exists('hotel_ids', $data) ? $data['hotel_ids'] : [],
             'code' => array_key_exists('code', $data) ? $data['code'] : $Tourist->code,
             'is_valid' => array_key_exists('is_valid', $data) ? $data['is_valid'] : $Tourist->is_valid,
         ];
