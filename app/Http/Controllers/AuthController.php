@@ -23,7 +23,7 @@ class AuthController extends Controller
      */
     public function __construct(private UserService $userService)
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login','refresh']]);
         $this->userService = $userService;
     }
 
@@ -47,7 +47,6 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'first_name';
         $user = User::where($fieldType, $request->email)->first();
-
         if (!$token = Auth::attempt([
             $fieldType => $credentials['email'],
             'password' => $credentials['password']
@@ -226,7 +225,17 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken($this->guard()->refresh());
+        try {
+            $newToken = auth()->refresh();
+            $user = auth()->user();
+            return $this->respondWithToken($newToken, $user);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(['error' => 'token_expired'], 401);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['error' => 'token_invalid'], 401);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['error' => 'token_absent'], 401);
+        }
     }
 
     /**
@@ -238,8 +247,11 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token, $user)
     {
+        $refreshToken = $this->guard()->refresh();
+
         return response()->json([
             'access_token' => $token,
+            'refresh_token' => $refreshToken,
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60,
             'user' => new UserResource($user)
