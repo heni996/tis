@@ -247,11 +247,8 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token, $user)
     {
-        $refreshToken = $this->guard()->refresh();
-
         return response()->json([
             'access_token' => $token,
-            'refresh_token' => $refreshToken,
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60,
             'user' => new UserResource($user)
