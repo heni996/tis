@@ -57,7 +57,6 @@ class AuthController extends Controller
                 return response()->json(['error' => 'wrong password'], 401);
             }
         }
-        // $user->update(['auth' => 1]);
         return $this->respondWithToken($token, $user);
     }
 
