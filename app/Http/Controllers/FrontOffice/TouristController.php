@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FrontOffice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tourist\CreateTouristRequest;
 use App\Http\Requests\Tourist\UpdateTouristRequest;
+use App\Http\Resources\FrontOffice\SampleTouristResource;
 use App\Http\Resources\FrontOffice\TouristResource;
 use App\Http\Services\FrontOffice\TouristService;
 use App\Models\Tourist;
@@ -163,7 +164,7 @@ class TouristController extends Controller
 
         return response()->json([
             'message' => 'Code validated successfully',
-            'tourist' => new TouristResource($tourist)
+            'tourist' => new SampleTouristResource($tourist)
         ]);
     }
 

@@ -29,7 +29,7 @@ class GuestBook extends Model
         'client_first_name',
         'client_last_name',
         'email',
-        'phone_number',
+        // 'phone_number',
         'extra_comment',
         'hotel_id',
         // 'language',
