@@ -30,9 +30,9 @@ class QuestionController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $response = $this->QuestionService
             ->getQuestions($this->QuestionModel, $request);
         return response()->json($response);
@@ -45,9 +45,9 @@ class QuestionController extends Controller
      */
     public function store(CreateQuestionRequest $request): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $QuestionData = $request->validated();
         $filePath = uploadFile($request, 'Question_files', 'file');
         if ($filePath) {

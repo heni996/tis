@@ -2,7 +2,7 @@
 
 namespace App\Http\Services\FrontOffice;
 
-use App\Http\Resources\BackOffice\ResponseResource;
+use App\Http\Resources\FrontOffice\ResponseResource;
 use App\ModelFilters\ResponseFilter;
 use App\Models\Response;
 use Illuminate\Database\Eloquent\Collection;
@@ -39,7 +39,7 @@ class ResponseService
 
     public function getResponses(Response $ResponseModel)
     {
-        return $ResponseModel::all();
+        return ResponseResource::collection($ResponseModel::all());
     }
 
     public function ResponseData($data): array

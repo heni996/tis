@@ -30,9 +30,9 @@ class ResponseController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $response = $this->ResponseService
             ->getResponses($this->ResponseModel, $request);
         return response()->json($response);
@@ -45,9 +45,9 @@ class ResponseController extends Controller
      */
     public function store(CreateResponseRequest $request): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $ResponseData = $request->validated();
         $filePath = uploadFile($request, 'Response_files', 'file');
         if ($filePath) {
@@ -69,9 +69,9 @@ class ResponseController extends Controller
      */
     public function show($id): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $Response = $this->ResponseService
             ->getResponseById($id, $this->ResponseModel);
 
