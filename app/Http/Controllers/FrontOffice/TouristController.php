@@ -159,9 +159,12 @@ class TouristController extends Controller
             throw new \Exception('Code is already valid.');
         }
 
-        $tourist->update(['is_valid' => true]);
+        // $tourist->update(['is_valid' => true]);
 
-        return response()->json(['message' => 'Code validated successfully']);
+        return response()->json([
+            'message' => 'Code validated successfully',
+            'tourist' => new TouristResource($tourist)
+        ]);
     }
 
     public function generateUniqueCode()

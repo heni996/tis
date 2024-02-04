@@ -49,8 +49,8 @@ class GuestBookService
             'phone_number'=>$data['phone_number'],
             'extra_comment'=>$data['extra_comment'],
             'hotel_id'=>$data['hotel_id'],
-            'language'=>$data['language'],
-            'country'=>$data['country'],
+            'language' => array_key_exists('language', $data) ? $data['language']: "",
+            'country' => array_key_exists('country',$data)?$data['country']:"",
         ];
     }
 

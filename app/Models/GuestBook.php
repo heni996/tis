@@ -32,8 +32,8 @@ class GuestBook extends Model
         'phone_number',
         'extra_comment',
         'hotel_id',
-        'language',
-        'country',
+        // 'language',
+        // 'country',
     ];
 
     /**

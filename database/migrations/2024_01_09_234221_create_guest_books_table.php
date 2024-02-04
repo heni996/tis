@@ -24,8 +24,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('hotels')
                 ->onDelete('set null');
-            $table->string('language', 3);
-            $table->string('country', 50);
+            $table->string('language', 3)->nullable();
+            $table->string('country', 50)->nullable();
             $table->timestamps();
         });
     }

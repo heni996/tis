@@ -49,10 +49,6 @@ class GuestBookController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $GuestBookData = $request->validated();
-        $filePath = uploadFile($request, 'GuestBook_files', 'file');
-        if ($filePath) {
-            $GuestBookData['file'] = $filePath;
-        }
         $GuestBook = $this->GuestBookService
             ->createGuestBook($GuestBookData, $this->GuestBookModel);
         return response()->json([
@@ -94,10 +90,6 @@ class GuestBookController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $GuestBookData = $request->validated();
-        $filePath = uploadFile($request, 'GuestBook_files', 'file');
-        if ($filePath) {
-            $GuestBookData['file'] = $filePath;
-        }
         $GuestBook = $this->GuestBookService
             ->getGuestBookById($id, $this->GuestBookModel);
 
