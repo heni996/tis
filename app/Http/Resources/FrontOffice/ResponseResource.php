@@ -19,8 +19,8 @@ class ResponseResource extends JsonResource
             'value' => $this->value,
             'question_id' => $this->question_id,
             'guest_book_id' => $this->guest_book_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            // 'created_at' => $this->created_at,
+            // 'updated_at' => $this->updated_at,
             'question' => new QuestionResource($this->whenLoaded('question')),
             'guest_book' => new GuestBookResource($this->whenLoaded('guestBook')),
             // Add other fields or relationships as needed
