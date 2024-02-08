@@ -16,7 +16,12 @@ function getRecords($model, $filters, $resourceClass, $with = [], $specificIds =
         $query->whereIn('id', $specificIds);
     }
     if ($filterClass && $filters) {
-        $query = (new $filterClass($query))->filter($filters, $filterClass);
+        foreach ($filters as $key => $value) {
+            $methodName = snakeToCamel($key);
+            if (method_exists($filterClass, $methodName)) {
+                $query = (new $filterClass($query))->$methodName($value);
+            }
+        }
     }
     $isPaginated = isset($filters['paginated']) && $filters['paginated'];
     if ($isPaginated) {
@@ -31,6 +36,11 @@ function getRecords($model, $filters, $resourceClass, $with = [], $specificIds =
         'data' => $resourceClass::collection($results),
         'paginator' => $pagination,
     ];
+}
+
+function snakeToCamel($value)
+{
+    return lcfirst(str_replace('_', '', ucwords($value, '_')));
 }
 
 

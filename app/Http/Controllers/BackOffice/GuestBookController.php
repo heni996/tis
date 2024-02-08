@@ -30,9 +30,9 @@ class GuestBookController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $response = $this->GuestBookService
             ->getGuestBooks($this->GuestBookModel, $request);
         return response()->json($response);
@@ -135,5 +135,20 @@ class GuestBookController extends Controller
         $this->GuestBookService->deleteGuestBook($GuestBook);
 
         return response()->json(['message' => "GuestBook a été supprimé avec succée."], 202);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return JsonResponse
+     */
+    public function getCommentaireGroupedBy(Request $request): JsonResponse
+    {
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
+        $response = $this->GuestBookService
+            ->getGuestBooks($this->GuestBookModel, $request);
+        return response()->json($response);
     }
 }

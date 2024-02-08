@@ -30,9 +30,9 @@ class GuestBookController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $response = $this->GuestBookService
             ->getGuestBooks($this->GuestBookModel, $request);
         return response()->json($response);

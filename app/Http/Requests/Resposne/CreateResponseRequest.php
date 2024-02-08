@@ -23,8 +23,10 @@ class CreateResponseRequest extends FormRequest
     {
         return [
             'value' => 'required|string',
-            'question_id' => 'required|exists:questions,id',
-            'guest_book_id' => 'required|exists:guest_books,id',
+            // 'question_id' => 'required|exists:questions,id',
+            // 'guest_book_id' => 'required|exists:guest_books,id',
+            'question_id' => 'required',
+            'guest_book_id' => 'required',
             // Add other rules as needed
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Services\BackOffice;
 
 use App\Http\Resources\BackOffice\GuestBookResource;
+use App\ModelFilters\GuestBookFilter;
 // use App\ModelFilters\GuestBookFilter;
 use App\Models\GuestBook;
 
@@ -35,8 +36,7 @@ class GuestBookService
 
     public function getGuestBooks(GuestBook $GuestBookModel, $request)
     {
-        // return getRecords($GuestBookModel, $request->all(), GuestBookResource::class, [], [], false, GuestBookFilter::class);
-        return $GuestBookModel::all();
+        return getRecords($GuestBookModel, $request->all(), GuestBookResource::class, [], [], false, GuestBookFilter::class);
     }
 
 

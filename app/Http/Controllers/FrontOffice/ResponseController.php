@@ -57,7 +57,7 @@ class ResponseController extends Controller
             ->createResponse($ResponseData, $this->ResponseModel);
         return response()->json([
             'message' => "Response a été créé avec succès.",
-            'data' => new ResponseResource($Response)
+            // 'data' => new ResponseResource($Response)
         ], 201);
     }
 
