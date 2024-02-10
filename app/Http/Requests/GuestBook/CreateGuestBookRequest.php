@@ -25,11 +25,11 @@ class CreateGuestBookRequest extends FormRequest
             'client_first_name' => 'required|string',
             'client_last_name' => 'required|string',
             'email' => 'required|email',
-            'phone_number' => 'required|string',
+            // 'phone_number' => 'required|string',
             'extra_comment' => 'nullable|string',
-            'hotel_id' => 'required|exists:hotels,id',
-            'language' => 'required|string',
-            'country' => 'required|string',
+            'hotel_id' => 'required',
+            // 'language' => 'required|string',
+            // 'country' => 'required|string',
             // Add other rules as needed
         ];
     }

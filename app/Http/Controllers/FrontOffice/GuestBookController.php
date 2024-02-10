@@ -49,11 +49,11 @@ class GuestBookController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $GuestBookData = $request->validated();
-        $GuestBook = $this->GuestBookService
+        $this->GuestBookService
             ->createGuestBook($GuestBookData, $this->GuestBookModel);
         return response()->json([
             'message' => "GuestBook a été créé avec succès.",
-            'data' => new GuestBookResource($GuestBook)
+            // 'data' => new GuestBookResource($GuestBook)
         ], 201);
     }
 

@@ -43,11 +43,11 @@ class GuestBookService
     public function GuestBookData($data): array
     {
         return [
-            'client_first_name' => $data['client_first_name'],
-            'client_last_name'=>$data['client_last_name'],
-            'email'=>$data['email'],
-            'phone_number'=>$data['phone_number'],
-            'extra_comment'=>$data['extra_comment'],
+            'client_first_name' => array_key_exists('client_first_name', $data) ? $data['client_first_name'] : "",
+            'client_last_name' => array_key_exists('client_last_name', $data) ? $data['client_last_name'] : "",
+            'email' => array_key_exists('email', $data) ? $data['email'] : "",
+            'phone_number' => array_key_exists('phone_number', $data) ? $data['phone_number'] :"",
+            'extra_comment' => array_key_exists('extra_comment', $data) ? $data['extra_comment'] : "",
             'hotel_id'=>$data['hotel_id'],
             'language' => array_key_exists('language', $data) ? $data['language']: "",
             'country' => array_key_exists('country',$data)?$data['country']:"",
