@@ -62,7 +62,7 @@ class TouristController extends Controller
         $Tourist->hotels()->attach($TouristData['hotel_ids']);
         return response()->json([
             'message' => "Tourist a été créé avec succès.",
-            'data' => new TouristResource($Tourist)
+            // 'data' => new TouristResource($Tourist)
         ], 201);
     }
 
