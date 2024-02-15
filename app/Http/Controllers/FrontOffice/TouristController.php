@@ -51,10 +51,10 @@ class TouristController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $TouristData = $request->validated();
-        // $filePath = uploadFile($request, 'Tourist_files', 'file');
-        // if ($filePath) {
-        //     $TouristData['file'] = $filePath;
-        // }
+        $filePath = uploadFile($request, 'Tourist_files', 'image');
+        if ($filePath) {
+            $TouristData['image'] = $filePath;
+        }
         $TouristData['code'] = $this->generateUniqueCode();
         $TouristData['is_valid'] = false;
         $Tourist = $this->TouristService
@@ -99,10 +99,10 @@ class TouristController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $TouristData = $request->validated();
-        // $filePath = uploadFile($request, 'Tourist_files', 'file');
-        // if ($filePath) {
-        //     $TouristData['file'] = $filePath;
-        // }
+        $filePath = uploadFile($request, 'Tourist_files', 'image');
+        if ($filePath) {
+            $TouristData['image'] = $filePath;
+        }
         $Tourist = $this->TouristService
             ->getTouristById($id, $this->TouristModel);
 

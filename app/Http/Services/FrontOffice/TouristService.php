@@ -54,6 +54,7 @@ class TouristService
             'hotel_ids' => array_key_exists('hotel_ids', $data) ? $data['hotel_ids'] : [],
             'code'=>$data['code'],
             'is_valid'=>$data['is_valid'],
+            'image' => array_key_exists('image', $data) ? $data['image'] : "",
         ];
     }
     public function UpdateTouristData($data, Tourist $Tourist): array
@@ -70,6 +71,7 @@ class TouristService
             'hotel_ids' => array_key_exists('hotel_ids', $data) ? $data['hotel_ids'] : [],
             'code' => array_key_exists('code', $data) ? $data['code'] : $Tourist->code,
             'is_valid' => array_key_exists('is_valid', $data) ? $data['is_valid'] : $Tourist->is_valid,
+            'image' => array_key_exists('image', $data) ? $data['image'] : "",
         ];
     }
 }

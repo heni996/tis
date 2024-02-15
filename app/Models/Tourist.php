@@ -36,6 +36,7 @@ class Tourist extends Model
         'departure_date',
         'code',
         'is_valid',
+        'image'
     ];
 
     public function hotels()
