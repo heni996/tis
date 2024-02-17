@@ -8,10 +8,13 @@ use App\Http\Requests\Tourist\UpdateTouristRequest;
 use App\Http\Resources\FrontOffice\SampleTouristResource;
 use App\Http\Resources\FrontOffice\TouristResource;
 use App\Http\Services\FrontOffice\TouristService;
+use App\Mail\TouristCreated;
 use App\Models\Tourist;
 use App\Models\Trainer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Mail;
+use URL;
 
 class TouristController extends Controller
 {
@@ -60,6 +63,9 @@ class TouristController extends Controller
         $Tourist = $this->TouristService
             ->createTourist($TouristData, $this->TouristModel);
         $Tourist->hotels()->attach($TouristData['hotel_ids']);
+        // $touristUrl = URL::signedRoute('tourist.show', ['tourist' => $Tourist->id]);
+        // Mail::to($request->validated()['email'])->send(new TouristCreated($touristUrl));
+
         return response()->json([
             'message' => "Tourist a été créé avec succès.",
             // 'data' => new TouristResource($Tourist)

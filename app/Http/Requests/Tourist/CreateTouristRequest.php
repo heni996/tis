@@ -30,8 +30,8 @@ class CreateTouristRequest extends FormRequest
             'email' => 'required|email|unique:tourists,email',
             'arrival_date' => 'required|date',
             'departure_date' => 'required|date|after:arrival_date',
-            'hotel_ids' => 'nullable|array',
-            'hotel_ids.*' => 'exists:hotels,id',
+            'hotel_ids' => 'nullable',
+            // 'hotel_ids.*' => 'exists:hotels,id',
             // 'code' => 'required|string|unique:tourists,code',
             // 'is_valid' => 'boolean',
         ];
