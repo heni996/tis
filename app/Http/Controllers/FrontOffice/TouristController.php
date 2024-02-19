@@ -14,6 +14,7 @@ use App\Models\Trainer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mail;
+use Str;
 use URL;
 
 class TouristController extends Controller
@@ -54,10 +55,16 @@ class TouristController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $TouristData = $request->validated();
-        $filePath = uploadFile($request, 'Tourist_files', 'image');
-        if ($filePath) {
-            $TouristData['image'] = $filePath;
+        $fileTemp = $request->file('file');
+        if($fileTemp->isValid()){
+            $fileExtension = $fileTemp->getClientOriginalExtension();
+            $fileName = Str::random(4). '.'. $fileExtension;
+            $path = $fileTemp->storeAs(
+                'public/tourist_file', $fileName
+            );
+            $TouristData['image'] = $path;
         }
+
         $TouristData['code'] = $this->generateUniqueCode();
         $TouristData['is_valid'] = false;
         $Tourist = $this->TouristService
