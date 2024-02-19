@@ -28,7 +28,8 @@ class TouristResource extends JsonResource
             'is_valid' => $this->is_valid,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'hotels' => $this->hotels
+            'hotels' => $this->hotels,
+            'image'=> $this->image
         ];
     }
 }
