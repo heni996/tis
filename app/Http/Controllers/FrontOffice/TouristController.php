@@ -56,6 +56,7 @@ class TouristController extends Controller
         }
         $TouristData = $request->validated();
         $fileTemp = $request->file('file');
+        dd($fileTemp);
         if($fileTemp->isValid()){
             $fileExtension = $fileTemp->getClientOriginalExtension();
             $fileName = Str::random(4). '.'. $fileExtension;
