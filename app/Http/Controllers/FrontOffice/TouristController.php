@@ -55,8 +55,7 @@ class TouristController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $TouristData = $request->validated();
-        $fileTemp = $request->file('file');
-        dd($fileTemp);
+        $fileTemp = $request->file('image');
         if($fileTemp->isValid()){
             $fileExtension = $fileTemp->getClientOriginalExtension();
             $fileName = Str::random(4). '.'. $fileExtension;
